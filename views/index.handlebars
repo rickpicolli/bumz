@@ -1,0 +1,54 @@
+<div class="container">
+ 
+<form id="signinForm" name="signin">
+        <label for="email">Email Address</label>
+        <input id="email" class="text" name="email" type="text" />
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" />
+        <input id="signin" class="btn sbt" type="submit" value="Sign In" />
+</form>
+
+<form id="signupForm">
+        <label for="email">Email Address</label>
+        <input id="newEmail" class="text" name="email" type="email" />
+        <label for="name">name</label>
+        <input id="newName" name="name" type="text" />
+        <label for="password">Password</label>
+        <input id="newPWd" name="password" type="password" />
+        <input id="signup" class="btn sbt" type="submit" value="Sign Up" />
+</form>
+    
+</div>
+<script>
+	
+$(".sbt").on("click", function(e){
+	e.preventDefault();
+	var slectedForm = $(this).attr("id");
+
+	switch(slectedForm){
+		case "signup":
+			var newUser = {
+				name:$("#newName").val(),
+				email: $("#newEmail").val(),
+				password: $("#newPWd").val()
+			}
+			$.post("/signup", newUser, function (res){
+				console.log("create", res);
+				window.location.href = "/"
+			})
+		break;
+		case "signin":
+			var user = {
+				email:$("#email").val(),
+				password:$("#password").val()
+			}
+			$.post("/login", user, function(res){
+				console.log("log in", res);
+				window.location.href = "/"
+			})      
+		break;
+	}
+})
+
+
+</script>
