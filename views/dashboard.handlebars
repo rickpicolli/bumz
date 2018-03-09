@@ -2,15 +2,17 @@
 	<header align="center">
       <h1>Hi <span id="name"></span>, what do you want to do?</h1>
   </header>
-  <div class="container5"></div>
+  <div class="container">
+	  <div>
+		{{#each categories}}
+			<button class="catBtn btn btn-seconday" data-category="{{category}}">{{category}}</button>
+		{{/each}}
+		<button class="catBtn btn btn-seconday" data-category="saves">saves</button>
+	</div>
+  </div>
 </div>
 
-<div>
-	{{#each categories}}
-		<button>{{category}}</button>
-	{{/each}}
-	<button>saves</button>
-</div>
+
 
 <script>
 	var cookie = document.cookie.split("; ");
