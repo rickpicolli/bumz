@@ -5,7 +5,12 @@
   <div class="container5"></div>
 </div>
 
-
+<div>
+	{{#each categories}}
+		<button>{{category}}</button>
+	{{/each}}
+	<button>saves</button>
+</div>
 
 <script>
 	var cookie = document.cookie.split("; ");
