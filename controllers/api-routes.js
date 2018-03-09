@@ -27,17 +27,23 @@ var Op = Sequelize.Op;
 
 	// display user dashboard with all existing categories
 	router.get("/dashboard", function(req, res){
+		if(req.isAuthenticated()){
+			res.render("dashboard");
+		}else{
+			res.redirect("/");
+		}
+		
 		// is user logged in
 		// get all categories
 		// send array of categories to handlebars front end
 		// and get logged in users saves
-		db.Category.findAll()
-		.then(function(cats){
-			var hndlBrsObj = {
-				categories: cats
-			}
-			res.render("index", hndlBrsObj)
-		});	
+		// db.Category.findAll()
+		// .then(function(cats){
+		// 	var hndlBrsObj = {
+		// 		categories: cats
+		// 	}
+		// 	res.render("index", hndlBrsObj)
+		// });	
 	})
 
 
@@ -101,6 +107,7 @@ var Op = Sequelize.Op;
         userId: user.dataValues.id,
         username: user.dataValues.name
       }
+      res.cookie('user_name', user.name );
       res.json(status);
 
       //return res.redirect(req.headers.referer);
@@ -144,6 +151,7 @@ var Op = Sequelize.Op;
 	      	username: user.dataValues.name,
 	      	
 	      }
+	      res.cookie('user_name', user.name );
 	      res.json(status);
 
 	 

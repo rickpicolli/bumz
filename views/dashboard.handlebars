@@ -1,0 +1,14 @@
+<div>
+	<header align="center">
+      <h1>Hi <span id="name"></span>, what do you want to do?</h1>
+  </header>
+  <div class="container5"></div>
+</div>
+
+
+
+<script>
+	var cookie = document.cookie.split("; ");
+	var userName = cookie[0].split("=");
+	$("#name").text(userName[1]);
+</script>

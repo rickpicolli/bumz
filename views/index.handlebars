@@ -27,17 +27,20 @@ $(".sbt").on("click", function(e){
 
 	switch(slectedForm){
 		case "signup":
+			$("#signin").text("Loading.....")
 			var newUser = {
 				name:$("#newName").val(),
 				email: $("#newEmail").val(),
 				password: $("#newPWd").val()
 			}
+
 			$.post("/signup", newUser, function (res){
 				console.log("create", res);
 				window.location.href = "/"
 			})
 		break;
 		case "signin":
+			$("#signup").text("Loading.....")
 			var user = {
 				email:$("#email").val(),
 				password:$("#password").val()
