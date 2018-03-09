@@ -36,7 +36,7 @@ $(".sbt").on("click", function(e){
 
 			$.post("/signup", newUser, function (res){
 				console.log("create", res);
-				window.location.href = "/"
+				window.location.href = "/dashboard"
 			})
 		break;
 		case "signin":
@@ -47,7 +47,7 @@ $(".sbt").on("click", function(e){
 			}
 			$.post("/login", user, function(res){
 				console.log("log in", res);
-				window.location.href = "/"
+				window.location.href = "/dashboard"
 			})      
 		break;
 	}

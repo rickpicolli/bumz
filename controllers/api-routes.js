@@ -22,13 +22,20 @@ var Op = Sequelize.Op;
 		// if user is authenticated redirected to dashboard
 		console.log("#####",req.isAuthenticated())
 		console.log("hellooooo");
-		res.render("index")
+
+		res.render("index" )
 	})
 
 	// display user dashboard with all existing categories
 	router.get("/dashboard", function(req, res){
 		if(req.isAuthenticated()){
-			res.render("dashboard");
+			db.category.findAll()
+		.then(function(categories){
+				var hndlBrsObj = {
+					categories: categories
+				}
+				res.render("dashboard", hndlBrsObj);
+			})
 		}else{
 			res.redirect("/");
 		}
@@ -53,13 +60,13 @@ var Op = Sequelize.Op;
 	// within the dashboard a user can click to view all of their saved items
 	router.get("/api/saves", function(){
 		// is user logged in
-		db.Save.findAll()
-		.then(function(saves){
-			var hndlBrsObj = {
-				saves: saves
-			}
-			res.render("index", hndlBrsObj)
-		});
+		// db.Save.findAll()
+		// .then(function(saves){
+		// 	var hndlBrsObj = {
+		// 		saves: saves
+		// 	}
+		// 	res.render("index", hndlBrsObj)
+		// });
 	})
 
 	// create a new save item for user
@@ -108,10 +115,10 @@ var Op = Sequelize.Op;
         username: user.dataValues.name
       }
       res.cookie('user_name', user.name );
-      res.json(status);
+      //res.json(status);
 
       //return res.redirect(req.headers.referer);
-      //res.redirect("/account");
+      res.redirect("/dashboard");
       
     });      
   })(req, res, next);
@@ -152,10 +159,10 @@ var Op = Sequelize.Op;
 	      	
 	      }
 	      res.cookie('user_name', user.name );
-	      res.json(status);
+	      //res.json(status);
 
 	 
-	      //res.redirect("/account");
+	      res.redirect("/dashboard");
 	      
 	    });      
 	  })(req, res, next);
