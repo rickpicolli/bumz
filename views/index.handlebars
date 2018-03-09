@@ -35,7 +35,7 @@ $(".sbt").on("click", function(e){
 			}
 
 			$.post("/signup", newUser, function (res){
-				console.log("create", res);
+				//console.log("create", res);
 				window.location.href = "/dashboard"
 			})
 		break;
@@ -46,7 +46,7 @@ $(".sbt").on("click", function(e){
 				password:$("#password").val()
 			}
 			$.post("/login", user, function(res){
-				console.log("log in", res);
+				//console.log("log in", res);
 				window.location.href = "/dashboard"
 			})      
 		break;
