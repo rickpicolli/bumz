@@ -61,7 +61,7 @@ $(document).ready(function(){
     switch(selectedBtn){
       case "next":
         // if selected catelgoy is youtube
-       // nextSong();
+       nextVideo();
 
         // stop 
       break;
@@ -154,11 +154,7 @@ function resetResults(){
         <h2>${item.snippet.title}</h2>
         <iframe class="video w100" width="640" height="360" src="//www.youtube.com/embed/${item.id.videoId}" frameborder="0" allowfullscreen></iframe>
       </div>`
-      $($ytWrap).append(item)
-      // $.get("item.html", function(data) {
-      //   console.log("###", data)
-      //   // $($ytWrap).append(tplawesome(data, [{"title":item.snippet.title, "videoid":item.id.videoId}]));
-      // });
+      $($ytWrap).append(item);
 
       // save wrapper with result buttons to a variable
       var btns = createButtons(i)
@@ -168,14 +164,13 @@ function resetResults(){
 
     });
   }
-
   // styling for video
   function resetVideoHeight() {
       $(".video").css("height", $("#results").width() * 9/16);
   }
 
   // show next video (1-3)
-  function nextYoutube(){
+  function nextVideo(){
     // youtube 
         var current = $(".currentVideo").data("video");
         var next = [ytResults[current+1]]
