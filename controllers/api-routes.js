@@ -9,7 +9,7 @@ var router   = express.Router();
 var Sequelize = require('sequelize');
 var Op = Sequelize.Op;
 
-
+var status = {}
 	
 	/*------------HTML ROUTES --------------*/
 
@@ -22,35 +22,32 @@ var Op = Sequelize.Op;
 		// if user is authenticated redirected to dashboard
 		console.log("#####",req.isAuthenticated())
 		console.log("hellooooo");
-
-		res.render("index" )
+		var hdblBrObj = {
+	    loggedIn: req.isAuthenticated()
+	  }
+		  
+	  if(req.isAuthenticated()){
+	     res.redirect("/dashboard");
+	  }else{
+	    res.render("index", hdblBrObj);
+	  }
 	})
 
 	// display user dashboard with all existing categories
 	router.get("/dashboard", function(req, res){
+		console.log("$$$", req.isAuthenticated());
 		if(req.isAuthenticated()){
 			db.category.findAll()
-		.then(function(categories){
+			.then(function(categories){
 				var hndlBrsObj = {
-					categories: categories
+					categories: categories,
+					name: status.name
 				}
 				res.render("dashboard", hndlBrsObj);
 			})
 		}else{
 			res.redirect("/");
 		}
-		
-		// is user logged in
-		// get all categories
-		// send array of categories to handlebars front end
-		// and get logged in users saves
-		// db.Category.findAll()
-		// .then(function(cats){
-		// 	var hndlBrsObj = {
-		// 		categories: cats
-		// 	}
-		// 	res.render("index", hndlBrsObj)
-		// });	
 	})
 
 
@@ -75,57 +72,55 @@ var Op = Sequelize.Op;
 		// save search to saves add user foreign key
 	})
 
-
-
-
 	// ====================== API Routes ========================= // 
 
 	// process the signup form ==============================================
 	//=======================================================================
 
 	router.post('/signup', function(req, res, next) {
-  passport.authenticate('local-signup', function(err, user, info) {
-    if (err) {
-      //console.log("passport err", err)
-      return next(err); // will generate a 500 error
-    }
-    // Generate a JSON response reflecting authentication status
-    if (! user) {
-      return res.send({ success : false, message : 'authentication failed' });
-    }
-    
-    // ***********************************************************************
-    // "Note that when using a custom callback, it becomes the application's
-    // responsibility to establish a session (by calling req.login()) and send
-    // a response."
-    // Source: http://passportjs.org/docs
-    // ***********************************************************************
+	  passport.authenticate('local-signup', function(err, user, info) {
+	    if (err) {
+	      //console.log("passport err", err)
+	      return next(err); // will generate a 500 error
+	    }
+	    // Generate a JSON response reflecting authentication status
+	    if (! user) {
+	      return res.send({ success : false, message : 'authentication failed' });
+	    }
+	    
+	    // ***********************************************************************
+	    // "Note that when using a custom callback, it becomes the application's
+	    // responsibility to establish a session (by calling req.login()) and send
+	    // a response."
+	    // Source: http://passportjs.org/docs
+	    // ***********************************************************************
 
-    req.login(user, loginErr => {
-      if (loginErr) {
-        //console.log("loginerr", loginerr)
-        return next(loginErr);
-      }
+	    req.login(user, loginErr => {
+	      if (loginErr) {
+	        //console.log("loginerr", loginerr)
+	        return next(loginErr);
+	      }
 
-      //console.log('redirecting....');
-      var status ={
-        code: 200,
-        isLoggedIn: true,
-        userId: user.dataValues.id,
-        username: user.dataValues.name
-      }
-      res.cookie('user_name', user.name );
-      //res.json(status);
+	      //console.log('redirecting....');
 
-      //return res.redirect(req.headers.referer);
-      res.redirect("/dashboard");
-      
-    });      
-  })(req, res, next);
-});
+	      	status["code"] = 200;
+	      	status["isLoggedIn"] = true;
+	      	status["userId"] = user.id;
+	      	status["name"] = user.name;
+	      
+
+	      res.cookie('user_name', user.name );
+	      //res.json(status);
+
+	 
+	      res.redirect("dashboard");
+	      
+	    });      
+	  })(req, res, next);
+	});
 
 	router.post('/login', function(req, res, next) {
-	 
+ 
 	  passport.authenticate('local-login', function(err, user, info) {
 	    if (err) {
 	      //console.log("passport err", err)
@@ -148,30 +143,34 @@ var Op = Sequelize.Op;
 	        //console.log("loginerr", loginErr)
 	        return next(loginErr);
 	      }
-	      //var userId = user.dataValues.id;
-	      //console.log('redirecting....')
-	      var userName = user.dataValues.name;
-	      var status ={
-	      	code: 200,
-	      	isLoggedIn: true,
-	      	userId: user.dataValues.id,
-	      	username: user.dataValues.name,
-	      	
-	      }
-	      res.cookie('user_name', user.name );
-	      //res.json(status);
-
 	 
-	      res.redirect("/dashboard");
+	      console.log()
+	      status["code"] = 200;
+      	status["isLoggedIn"] = true;
+      	status["userId"] = user.id;
+      	status["name"] = user.name;
+
+	      console.log(user.firstname)
+	      console.log(status);
+
+	       res.cookie('user_name', user.name );
+	 
+	      res.redirect("dashboard");
+	       
 	      
 	    });      
 	  })(req, res, next);
-	});
+  });
 
 	// logout of user account
-	router.get('/logout', function(req, res) {
-	    req.logout();
-	    res.redirect('/');
+	router.get('/logout', (req, res) => {
+
+    req.session.destroy(function(err){
+      req.logout();
+      res.clearCookie('user_name');
+      res.clearCookie('user_sid');
+      res.redirect('/');
+    })
 	});
 
 

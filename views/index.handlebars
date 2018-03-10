@@ -1,6 +1,7 @@
 <div class="container">
  
-<form id="signinForm" name="signin">
+<form id="signinForm" action="/login" method="post">
+	<p id="#email-msg"></p>
         <label for="email">Email Address</label>
         <input id="email" class="text" name="email" type="text" />
         <label for="password">Password</label>
@@ -8,7 +9,7 @@
         <input id="signin" class="btn sbt" type="submit" value="Sign In" />
 </form>
 
-<form id="signupForm">
+<form id="signupForm" action="/signup" method="post">
         <label for="email">Email Address</label>
         <input id="newEmail" class="text" name="email" type="email" />
         <label for="name">name</label>
@@ -20,38 +21,32 @@
     
 </div>
 <script>
-	
-$(".sbt").on("click", function(e){
-	e.preventDefault();
-	var slectedForm = $(this).attr("id");
+// form validation
+	$("#email, #password").on('keyup', function () {
+		var email = $('#email').val()
+		var password = $('#password').val()
 
-	switch(slectedForm){
-		case "signup":
-			$("#signin").text("Loading.....")
-			var newUser = {
-				name:$("#newName").val(),
-				email: $("#newEmail").val(),
-				password: $("#newPWd").val()
-			}
+		if(email.length > 0 && validateEmail(email) && password.length > 0 ){
+			$("#signin").removeClass("disabled");
+			$("#signin").removeAttr('disabled');
+		}else{
+			$("#signin").addClass("disabled");
+			$("#signin").attr('disabled');
+		}
+	})
 
-			$.post("/signup", newUser, function (res){
-				//console.log("create", res);
-				window.location.href = "/dashboard"
-			})
-		break;
-		case "signin":
-			$("#signup").text("Loading.....")
-			var user = {
-				email:$("#email").val(),
-				password:$("#password").val()
-			}
-			$.post("/login", user, function(res){
-				//console.log("log in", res);
-				window.location.href = "/dashboard"
-			})      
-		break;
-	}
-})
+//
+// check valid email address
+function validateEmail(str){
+  var regex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+  if(!regex .test(str)){
+    $("#email-msg").text("Please enter valid email.").css('color', 'red');
+    return false
+  }else{
+    $("#email-msg").text("");
+    return true
+  }
+}
 
 
 </script>

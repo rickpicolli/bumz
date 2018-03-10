@@ -60,7 +60,6 @@ app.use("/", routes);
 app.use("/signup", routes);
 app.use("/login", routes);
 app.use("/logout", routes);
-app.use("/account", routes);
 
 db.sequelize.sync().then(function(){
 	app.listen(PORT,function(){

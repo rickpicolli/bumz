@@ -1,14 +1,14 @@
-INSERT INTO categories (category)
-values ("youtube");
+INSERT INTO categories (category, name)
+values ("youtube", "video");
 
-INSERT INTO categories (category)
-values ("spotify");
+INSERT INTO categories (category, name)
+values ("spotify", "music");
 
-INSERT INTO categories (category)
-values ("giffy");
+INSERT INTO categories (category, name)
+values ("giffy", "lolz");
 
-INSERT INTO categories (category)
-values ("postmates-f");
+INSERT INTO categories (category, name)
+values ("postmates-f", "food");
 
-INSERT INTO categories (category)
-values ("postmate-u");
+INSERT INTO categories (category, name)
+values ("postmate-u", "underwear");

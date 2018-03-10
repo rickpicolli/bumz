@@ -17,7 +17,7 @@ $(document).ready(function(){
   });
 
   // on click submit for search form do action for category
-  $("form").on("submit", function(e) {
+  $("#searchForm").on("submit", function(e) {
      e.preventDefault();
      // prepare the request
      $("#results").empty();
@@ -61,7 +61,7 @@ $(document).ready(function(){
     switch(selectedBtn){
       case "next":
         // if selected catelgoy is youtube
-        nextSong();
+       // nextSong();
 
         // stop 
       break;
@@ -148,14 +148,18 @@ function resetResults(){
       console.log(current)
 
     $.each(current, function(index, item) {
-      console.log(index, item);
+      console.log("####", index, item);
+
+      player.loadVideoById({videoId:item.id.videoId})
       $.get("item.html", function(data) {
-          $($ytWrap).append(tplawesome(data, [{"title":item.snippet.title, "videoid":item.id.videoId}]));
+      $($ytWrap).append(tplawesome(data, [{"title":item.snippet.title, "videoid":item.id.videoId}]));
       });
+
       // save wrapper with result buttons to a variable
       var btns = createButtons(i)
-      // ad video then wrap with buttons to page
-      $("#results").append($ytWrap, btns);
+
+      // // ad video then wrap with buttons to page
+      // $("#results").append($ytWrap, btns);
 
     });
   }
