@@ -149,17 +149,22 @@ function resetResults(){
 
     $.each(current, function(index, item) {
       console.log("####", index, item);
-
-      player.loadVideoById({videoId:item.id.videoId})
-      $.get("item.html", function(data) {
-      $($ytWrap).append(tplawesome(data, [{"title":item.snippet.title, "videoid":item.id.videoId}]));
-      });
+      var item = `
+      <div class="item">
+        <h2>${item.snippet.title}</h2>
+        <iframe class="video w100" width="640" height="360" src="//www.youtube.com/embed/${item.id.videoId}" frameborder="0" allowfullscreen></iframe>
+      </div>`
+      $($ytWrap).append(item)
+      // $.get("item.html", function(data) {
+      //   console.log("###", data)
+      //   // $($ytWrap).append(tplawesome(data, [{"title":item.snippet.title, "videoid":item.id.videoId}]));
+      // });
 
       // save wrapper with result buttons to a variable
       var btns = createButtons(i)
 
-      // // ad video then wrap with buttons to page
-      // $("#results").append($ytWrap, btns);
+      // ad video then wrap with buttons to page
+      $("#results").append($ytWrap, btns);
 
     });
   }
